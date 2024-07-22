@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UEFI Style Site</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <nav class="tabs">
+            <a href="#" class="tab active" id="tab-info">Информация</a>
+            <a href="#" class="tab" id="tab-passport">Паспорт сайта</a>
+            <a href="#" class="tab" id="tab-boot">Boot</a>
+            <a href="#" class="tab" id="tab-save-exit">Save & Exit</a>
+        </nav>
+        <div class="content">
+            <div id="content-info" class="tab-content">
+                <h2>О Pr0cessHacker`е:</h2>
+                <p>Привет! Я ProcessHacker</p>
+                <h3>Обо мне:</h3>
+                <p>Имя: макс<br>Живу: в России<br>Брат/сестра: сестра</p>
+                <h3>Девайсы:</h3>
+                <p>Телефон: Теспo spark 8c<br>Инфо: купите другой телефон так как это самый худший вариант<br>
+                Пк: Raskat Standart 300<br>Инфо: норм пк, 8 гд ОЗУ, процессор Intel core i3 10100 без видеокарты, она встроенная.<br>
+                Монитор: полностью не известен, максимум название фирмы Rombica</p>
+                <h3>Мои друзья:</h3>
+                <p>@Soska5242, @Windows_v95, @NotAFrizik, @Nikitoc2280, @exlon444, @keynet_python, @TheFastboot, @couita, @VirusNew17, @UltraB0rk3r, @dildonski, @nTERRONn, @Likuur</p>
+                <p>Я программирую на python, делаю ботов, программы, итп</p>
+                <h3>О Likuur`е:</h3>
+                <p>Обычный программист на C#, C++, JavaScript, HTML, CSS, F# и очень много другого. Написал такие проекты как: Likuurs Multitool, Window Viewer, GetIt Downloader, MrsMajor (только версии: 4.0, 5.0), Sonaltris и много чего ещё. Делает программы для ССН.</p>
+            </div>
+            <div id="content-passport" class="tab-content" hidden>
+                <h2>Паспорт сайта</h2>
+                Тема: UEFI Classic<br>
+                Язык: Русский<br>
+                Создатель: Likuur (по просьбе Pr0cessHacker)<br>
+                Владелец: Pr0cessHacker<br>
+                Хостинг: GitHub</p>
+            </div>
+            <div id="content-boot" class="tab-content" hidden>
+                <h2>Boot</h2>
+                <pre>
+Boot sector: main.html
+Host: likuur.github.io
+MBR Table:
+[BITS 16]
+[ORG 7C00h]
+    jmp     main
+main:
+    xor     ax, ax     ; DS=0
+    mov     ds, ax
+    cld                ; DF=0 because our LODSB requires it
+    mov     ax, 0012h  ; Select 640x480 16-color graphics video mode
+    int     10h
+    mov     si, string
+    mov     bl, 9      ; Red
+    call    printstr
+    jmp     $
+
+printstr:
+    mov     bh, 0     ; DisplayPage
+print:
+    lodsb
+    cmp     al, 0
+    je      done
+    mov     ah, 0Eh   ; BIOS.Teletype
+    int     10h
+    jmp     print
+done:
+    ret
+
+string db "load(main.html)"
+
+times 510 - ($-$$) db 0
+dw      0AA55h
+                </pre>
+            </div>
+            <div id="content-save-exit" class="tab-content" hidden>
+                <button id="save-btn" class="button">Save</button>
+                <button id="exit-btn" class="button">Exit</button>
+                <button id="save-exit-btn" class="button">Save & Exit</button>
+            </div>
+        </div>
+        <footer>
+            <p>Version 1.4.8.7 Copyright (C) LikuricanMegathrends, Inc.</p>
+        </footer>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+</html>
