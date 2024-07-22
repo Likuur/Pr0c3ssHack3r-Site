@@ -48,21 +48,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-
- setTimeout(() => {
-            document.body.innerHTML = '';
-            const bootScreen = document.createElement('div');
-            bootScreen.className = 'boot-screen';
-            bootScreen.innerHTML = '<div class="boot-message">Loading Windows</div>';
-            document.body.appendChild(bootScreen);
-            let dotsCount = 0;
-            const bootMessage = bootScreen.querySelector('.boot-message');
-            const interval = setInterval(() => {
-                dotsCount++;
-                if (dotsCount > 3) {
-                    dotsCount = 1; // Сброс счетчика точек
-                }
-                bootMessage.textContent = `Loading Windows${'.'.repeat(dotsCount)}`;
-            }, 1000);
-        }, 10000);
 });
