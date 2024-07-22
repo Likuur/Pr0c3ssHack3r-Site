@@ -4,22 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pr0c3ssHack3r Site</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <div class="boot-screen" id="boot-screen">
+        <div class="boot-message" id="boot-message">Press F8 or DEL to enter BIOS</div>
+    </div>
+
+  <div class="container hidden" id="bios-container">
         <nav class="tabs">
-            <a href="#" class="tab active" id="tab-info">Информация</a>
-            <a href="#" class="tab" id="tab-passport">Паспорт сайта</a>
-            <a href="#" class="tab" id="tab-boot">Boot</a>
-            <a href="#" class="tab" id="tab-save-exit">Save & Exit</a>
+            <a href="#" class="tab active" data-tab="information">Информация</a>
+            <a href="#" class="tab" data-tab="passport">Паспорт сайта</a>
+            <a href="#" class="tab" data-tab="boot">Boot</a>
+            <a href="#" class="tab" data-tab="save-exit">Save & Exit</a>
         </nav>
         <div class="content">
-            <div id="content-info" class="tab-content">
-                <h2>О Pr0cessHacker`е:</h2>
+            <div class="tab-content active" id="content-information">
+<h2>О Pr0cessHacker`е:</h2>
                 <p>Привет! Я ProcessHacker</p>
                 <h3>Обо мне:</h3>
                 <p>Имя: макс<br>Живу: в России<br>Брат/сестра: сестра</p>
@@ -33,7 +35,7 @@
                 <h3>О Likuur`е:</h3>
                 <p>Обычный программист на C#, C++, JavaScript, HTML, CSS, F# и очень много другого. Написал такие проекты как: Likuurs Multitool, Window Viewer, GetIt Downloader, MrsMajor (только версии: 4.0, 5.0), Sonaltris и много чего ещё. Делает программы для ССН.</p>
             </div>
-            <div id="content-passport" class="tab-content" hidden>
+            <div class="tab-content" id="content-passport">
                 <h2>Паспорт сайта</h2>
                 Тема: UEFI Classic<br>
                 Язык: Русский<br>
@@ -41,7 +43,7 @@
                 Владелец: Pr0cessHacker<br>
                 Хостинг: GitHub</p>
             </div>
-            <div id="content-boot" class="tab-content" hidden>
+            <div class="tab-content" id="content-boot">
                 <h2>Boot</h2>
                 <pre>
 Boot sector: main.html
@@ -79,16 +81,14 @@ times 510 - ($-$$) db 0
 dw      0AA55h
                 </pre>
             </div>
-            <div id="content-save-exit" class="tab-content" hidden>
-                <button id="save-btn" class="button">Save</button>
-                <button id="exit-btn" class="button">Exit</button>
-                <button id="save-exit-btn" class="button">Save & Exit</button>
+                        <div class="tab-content" id="content-save-exit">
+                <h2>Save & Exit</h2>
+                <div class="save-exit-option active" data-action="save">Save Changes and Exit</div>
+                <div class="save-exit-option" data-action="exit">Exit Without Saving</div>
             </div>
         </div>
-        <footer>
-            <p>Version 1.4.8.7 Copyright (C) LikuricanMegathrends, Inc.</p>
-        </footer>
     </div>
+
     <script src="scripts.js"></script>
 </body>
 </html>
