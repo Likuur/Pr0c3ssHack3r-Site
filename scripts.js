@@ -1,102 +1,68 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const tabs = document.querySelectorAll('.tab');
+    let currentTab = 0;
+    const tabs = document.querySelectorAll('a.tab');
     const contents = document.querySelectorAll('.tab-content');
-    const buttons = document.querySelectorAll('.button');
-
-    let activeTabIndex = 0;
-    let activeButtonIndex = -1;
+    const bootScreen = document.getElementById('boot-screen');
+    const biosContainer = document.getElementById('bios-container');
+    let currentSaveExitOption = 0;
+    const saveExitOptions = document.querySelectorAll('.save-exit-option');
 
     function showTab(index) {
         tabs.forEach((tab, i) => {
-            if (i === index) {
-                tab.classList.add('active');
-                contents[i].classList.add('active');
-                contents[i].hidden = false;
-                // Устанавливаем фокус на первом элементе контента
-                contents[i].querySelector('button')?.focus();
-            } else {
-                tab.classList.remove('active');
-                contents[i].classList.remove('active');
-                contents[i].hidden = true;
-            }
+            tab.classList.toggle('active', i === index);
+        });
+        contents.forEach((content, i) => {
+            content.classList.toggle('active', i === index);
         });
     }
-
-    function showButton(index) {
-        buttons.forEach((button, i) => {
-            if (i === index) {
-                button.classList.add('active');
-                button.focus(); // Устанавливаем фокус на активную кнопку
-            } else {
-                button.classList.remove('active');
-            }
-        });
-    }
-
-    function updateTabIndex(newIndex) {
-        activeTabIndex = newIndex;
-        showTab(activeTabIndex);
-        activeButtonIndex = -1; // При переключении на вкладки сбрасываем активную кнопку
-    }
-
-    function updateButtonIndex(newIndex) {
-        activeButtonIndex = newIndex;
-        showButton(activeButtonIndex);
-    }
-
-    // Инициализируем первую вкладку как активную
-    showTab(activeTabIndex);
+    showTab(currentTab);
 
     document.addEventListener('keydown', (event) => {
         if (event.key === 'ArrowRight') {
-            if (activeButtonIndex !== -1) {
-                // Переключение между кнопками
-                activeButtonIndex = (activeButtonIndex + 1) % buttons.length;
-                updateButtonIndex(activeButtonIndex);
-            } else {
-                // Переключение между вкладками
-                activeTabIndex = (activeTabIndex + 1) % tabs.length;
-                updateTabIndex(activeTabIndex);
-            }
+            currentTab = (currentTab + 1) % tabs.length;
+            showTab(currentTab);
         } else if (event.key === 'ArrowLeft') {
-            if (activeButtonIndex !== -1) {
-                // Переключение между кнопками
-                activeButtonIndex = (activeButtonIndex - 1 + buttons.length) % buttons.length;
-                updateButtonIndex(activeButtonIndex);
-            } else {
-                // Переключение между вкладками
-                activeTabIndex = (activeTabIndex - 1 + tabs.length) % tabs.length;
-                updateTabIndex(activeTabIndex);
+            currentTab = (currentTab - 1 + tabs.length) % tabs.length;
+            showTab(currentTab);
+        } else if (event.key === 'F8' || event.key === 'Delete') {
+            bootScreen.classList.add('hidden');
+            biosContainer.classList.remove('hidden');
+        } else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+            if (contents[currentTab].id === 'content-save-exit') {
+                saveExitOptions[currentSaveExitOption].classList.remove('active');
+                if (event.key === 'ArrowUp') {
+                    currentSaveExitOption = (currentSaveExitOption - 1 + saveExitOptions.length) % saveExitOptions.length;
+                } else {
+                    currentSaveExitOption = (currentSaveExitOption + 1) % saveExitOptions.length;
+                }
+                saveExitOptions[currentSaveExitOption].classList.add('active');
             }
         } else if (event.key === 'Enter') {
-            if (activeButtonIndex !== -1) {
-                // Нажатие на кнопку
-                buttons[activeButtonIndex].click();
-            }
-        } else if (event.key === 'Tab') {
-            // Переход к кнопкам
-            if (activeButtonIndex === -1) {
-                activeButtonIndex = 0;
-                updateButtonIndex(activeButtonIndex);
-            } else {
-                activeButtonIndex = -1;
-                buttons.forEach(button => button.classList.remove('active'));
+            if (contents[currentTab].id === 'content-save-exit') {
+                const selectedOption = saveExitOptions[currentSaveExitOption];
+                if (selectedOption.dataset.action === 'save') {
+                    alert('Сохранение настроек...');
+                } else if (selectedOption.dataset.action === 'exit') {
+                    window.close();
+                }
             }
         }
     });
 
-    // Save button functionality
-    document.getElementById('save-btn').addEventListener('click', () => {
-        alert('Changes Saved');
-    });
-
-    // Exit button functionality
-    document.getElementById('exit-btn').addEventListener('click', () => {
-        window.close();
-    });
-
-    // Save & Exit button functionality
-    document.getElementById('save-exit-btn').addEventListener('click', () => {
-        window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
-    });
+ setTimeout(() => {
+            document.body.innerHTML = '';
+            const bootScreen = document.createElement('div');
+            bootScreen.className = 'boot-screen';
+            bootScreen.innerHTML = '<div class="boot-message">Loading Windows</div>';
+            document.body.appendChild(bootScreen);
+            let dotsCount = 0;
+            const bootMessage = bootScreen.querySelector('.boot-message');
+            const interval = setInterval(() => {
+                dotsCount++;
+                if (dotsCount > 3) {
+                    dotsCount = 1; // Сброс счетчика точек
+                }
+                bootMessage.textContent = `Loading Windows${'.'.repeat(dotsCount)}`;
+            }, 1000);
+        }, 10000);
 });
