@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (contents[currentTab].id === 'content-save-exit') {
                 const selectedOption = saveExitOptions[currentSaveExitOption];
                 if (selectedOption.dataset.action === 'save') {
-                    alert('Сохранение настроек...');
+                    window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
                 } else if (selectedOption.dataset.action === 'exit') {
                     window.close();
                 }
